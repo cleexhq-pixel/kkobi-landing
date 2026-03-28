@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kkobi – AI Korean Speaking Practice App | Learn to Speak Korean from Day 1</title>
+  <meta name="description" content="Kkobi is an AI-powered Korean speaking practice app. Practice real Korean conversations, get instant pronunciation feedback, and finally speak Korean with confidence. Free beta now open.">
+  <meta name="keywords" content="learn Korean, Korean speaking practice, AI Korean tutor, speak Korean, Korean conversation practice, Korean pronunciation, learn Korean with AI, Korean language app, 한국어 말하기, 한국어 회화">
+  <link rel="canonical" href="https://kkobi.app">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kkobi.app">
+  <meta property="og:title" content="Kkobi – Speak Korean from Day 1 with AI">
+  <meta property="og:description" content="Stop just studying Korean. Start speaking it. Kkobi's AI gives you real-time conversation practice and pronunciation feedback — no fear, no judgment.">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"Kkobi","description":"AI-powered Korean speaking practice app","applicationCategory":"EducationApplication","operatingSystem":"iOS, Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://kkobi.app"}</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+  <style>
+    :root {
+      --ink:      #0f172a;
+      --paper:    #f7f6f2;
+      --purple:   #6c2eff;
+      --purple-lt:#ede8ff;
+      --gold:     #ffd84d;
+      --muted:    #6b7280;
+      --card:     #ffffff;
+      --border:   rgba(108,46,255,.09);
+      --radius:   22px;
+      --f-en: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --f-ko: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-en); background: var(--paper); color: var(--ink);
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 300; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: .55;
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(247,246,242,.92); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(108,46,255,.08);
+    }
+    .nav-logo { font-weight: 800; font-size: 1.45rem; letter-spacing: -.02em; color: var(--purple); text-decoration: none; display: flex; align-items: baseline; gap: .3rem; }
+    .nav-logo-ko { font-family: var(--f-ko); font-size: .7rem; font-weight: 400; color: var(--muted); }
+    .nav-pill { background: var(--purple); color: #fff; border: none; border-radius: 100px; padding: .55rem 1.4rem; font-size: .85rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform .18s, box-shadow .18s; }
+    .nav-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(108,46,255,.35); }
+
+    /* ══ HERO ══ */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; padding: 9rem 5.5vw 5rem; position: relative; overflow: hidden; }
+    .hero-glow { position: absolute; right: -10vw; top: 46%; transform: translateY(-50%); width: 58vw; height: 58vw; border-radius: 50%; pointer-events: none; background: radial-gradient(circle at 38% 38%, rgba(108,46,255,.12) 0%, rgba(255,216,77,.07) 45%, transparent 70%); }
+    .eyebrow { display: inline-flex; align-items: center; gap: .45rem; background: var(--purple-lt); border-radius: 100px; padding: .35rem 1rem; font-size: .73rem; font-weight: 700; color: var(--purple); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 1.7rem; animation: up .5s ease both; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 2s infinite; }
+    h1.hero-title { font-size: clamp(3rem, 5.2vw, 5rem); font-weight: 800; line-height: 1.04; letter-spacing: -.035em; animation: up .5s .07s ease both; }
+    h1.hero-title .accent { color: var(--purple); }
+    h1.hero-title .ko-pill { font-family: var(--f-ko); font-weight: 900; font-size: .9em; display: inline-block; background: var(--gold); color: var(--ink); padding: .02em .16em; border-radius: .12em; }
+    .hero-body { margin-top: 1.6rem; font-size: 1.08rem; line-height: 1.75; color: var(--muted); max-width: 42ch; animation: up .5s .14s ease both; }
+    .hero-ctas { margin-top: 2.2rem; display: flex; gap: .85rem; flex-wrap: wrap; animation: up .5s .21s ease both; }
+    .btn-fill { background: var(--purple); color: #fff; border: none; border-radius: 100px; padding: .9rem 2.3rem; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; transition: transform .18s, box-shadow .18s; }
+    .btn-fill:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(108,46,255,.38); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid rgba(15,23,42,.16); border-radius: 100px; padding: .9rem 2rem; font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: border-color .18s, transform .18s; }
+    .btn-outline:hover { border-color: var(--purple); transform: translateY(-2px); }
+    .trust-row { margin-top: 2rem; display: flex; align-items: center; gap: .9rem; font-size: .79rem; color: var(--muted); animation: up .5s .28s ease both; }
+    .flags { display: flex; gap: .25rem; font-size: 1.15rem; }
+
+    /* Hero phone */
+    .hero-phone-wrap { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; animation: up .65s .12s ease both; }
+    .phone { width: 258px; height: 515px; background: #100d22; border-radius: 42px; border: 7px solid #1b1834; box-shadow: 0 44px 88px rgba(14,12,26,.24), 0 0 0 1px rgba(255,255,255,.04) inset; overflow: hidden; transform: rotate(2deg); }
+    .phone-inner { width: 100%; height: 100%; background: linear-gradient(150deg, #130f2a 0%, #1d1942 100%); padding: 1.35rem 1.1rem; display: flex; flex-direction: column; gap: .7rem; }
+    .p-status { display: flex; justify-content: space-between; font-size: .57rem; color: rgba(255,255,255,.3); padding: 0 .2rem; }
+    .bubble { border-radius: 16px; padding: .65rem .95rem; font-size: .69rem; line-height: 1.55; max-width: 90%; }
+    .b-ai { background: rgba(108,46,255,.2); border: 1px solid rgba(108,46,255,.25); color: #e4dcff; align-self: flex-start; border-bottom-left-radius: 4px; font-family: var(--f-ko); }
+    .b-user { background: var(--gold); color: var(--ink); align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 700; font-family: var(--f-ko); }
+    .b-hint { background: rgba(255,255,255,.04); color: rgba(255,255,255,.4); font-size: .62rem; align-self: flex-start; border: 1px solid rgba(255,255,255,.06); border-radius: 10px; }
+    .score-card { margin-top: auto; background: rgba(255,255,255,.04); border-radius: 14px; padding: .75rem .95rem; border: 1px solid rgba(108,46,255,.16); }
+    .sc-label { font-size: .56rem; color: rgba(255,255,255,.3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
+    .sc-row { display: flex; justify-content: space-between; align-items: center; }
+    .sc-val { font-size: 1.35rem; color: var(--gold); font-weight: 800; letter-spacing: -.04em; }
+    .sc-grade { background: rgba(108,46,255,.28); color: #c4b0ff; border-radius: 6px; padding: .2rem .55rem; font-size: .64rem; font-weight: 700; }
+    .sc-bar { margin-top: .5rem; height: 4px; background: rgba(255,255,255,.07); border-radius: 99px; overflow: hidden; }
+    .sc-fill { height: 100%; width: 88%; background: linear-gradient(90deg, var(--purple), var(--gold)); border-radius: 99px; }
+    .float-badge { position: absolute; background: var(--card); border-radius: 14px; padding: .5rem .9rem; font-size: .72rem; font-weight: 600; box-shadow: 0 8px 24px rgba(14,12,26,.1); display: flex; align-items: center; gap: .5rem; white-space: nowrap; border: 1px solid var(--border); }
+    .fb-sub { font-size: .6rem; color: var(--muted); font-weight: 400; }
+    .fb-1 { top: 52px; right: -32px; animation: bob 4s ease-in-out infinite; }
+    .fb-2 { bottom: 82px; left: -42px; animation: bob 4s 1.9s ease-in-out infinite; }
+
+    /* ══ SHARED ══ */
+    .sec { padding: 6.5rem 5.5vw; }
+    .sec-label { font-size: .71rem; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); font-weight: 700; margin-bottom: .8rem; }
+    h2.sec-title { font-size: clamp(1.9rem, 3.3vw, 2.9rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.12; }
+    h2.sec-title .ko { font-family: var(--f-ko); font-weight: 900; }
+    .sec-body { margin-top: .9rem; font-size: .98rem; color: var(--muted); max-width: 48ch; line-height: 1.72; }
+
+    /* ══════════════════════════════════════════
+       APP SCREENS SECTION
+       핵심: 화면을 390×844(실제 iPhone 14 해상도)로
+       설계 후 scale()로 줄여서 고해상도 유지
+    ══════════════════════════════════════════ */
+    .app-sec {
+      background: #080614;
+      padding: 7rem 5.5vw 8rem;
+      position: relative; overflow: hidden;
+    }
+    /* 배경 그라디언트 레이어 */
+    .app-sec::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(108,46,255,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 30%, rgba(255,216,77,.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* 상단/하단 페이드 */
+    .app-sec::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(8,6,20,.6) 0%, transparent 15%, transparent 85%, rgba(8,6,20,.6) 100%);
+      pointer-events: none; z-index: 1;
+    }
+
+    .app-sec-inner {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      align-items: center; gap: 4rem;
+      position: relative; z-index: 2;
+    }
+
+    /* Left text */
+    .app-sec-text .sec-label { color: rgba(255,255,255,.3); }
+    .app-sec-text h2 { color: #fff; }
+    .app-sec-text .sec-body { color: rgba(255,255,255,.4); max-width: 38ch; }
+
+    .af-list { margin-top: 2.2rem; display: flex; flex-direction: column; gap: 1.3rem; }
+    .af-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .af-num {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(108,46,255,.2); border: 1px solid rgba(108,46,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 800; color: #a78bfa;
+    }
+    .af-item h4 { font-size: .92rem; font-weight: 700; color: #fff; margin-bottom: .22rem; }
+    .af-item p { font-size: .82rem; color: rgba(255,255,255,.38); line-height: 1.55; }
+
+    /* ── PHONE STAGE ── */
+    .phones-stage {
+      position: relative;
+      display: flex; align-items: flex-end; justify-content: center;
+      /* 3개 폰의 실제 합산 너이 + 여백 */
+      height: 540px;
+      gap: 0;
+    }
+
+    /*
+      각 폰은 390px × 844px (실제 iPhone 해상도 비율) 로 만들고
+      scale로 줄인다. 이렇게 하면 내부 폰트를 실제 앱처럼
+      14~17px로 정확히 설계해도 화면상으로는 자연스럽게 작게 표시됨.
+
+      center 폰: scale(0.52) → 약 203×439px 표시
+      side 폰:   scale(0.42) → 약 164×354px 표시
+    */
+    .mp-wrap {
+      position: relative;
+      /* transform-origin을 bottom center로 해서 아래쪽 정렬 */
+      transform-origin: bottom center;
+      /* 실제 크기를 잡아줄 컨테이너 */
+    }
+    .mp-wrap.center {
+      transform: scale(0.52);
+      margin: 0 -78px; /* scale 후 남는 공간 보정 */
+      z-index: 3;
+    }
+    .mp-wrap.side-l {
+      transform: scale(0.42) translateY(40px);
+      margin-right: -110px;
+      z-index: 2; opacity: .85;
+    }
+    .mp-wrap.side-r {
+      transform: scale(0.42) translateY(40px);
+      margin-left: -110px;
+      z-index: 2; opacity: .85;
+    }
+
+    .mockup-phone {
+      width: 390px;
+      height: 844px;
+      border-radius: 54px;
+      border: 10px solid #1a1730;
+      background: #0a0718;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 60px 120px rgba(0,0,0,.6),
+        0 20px 40px rgba(108,46,255,.15);
+      position: relative;
+    }
+
+    /* Dynamic island */
+    .mockup-phone::before {
+      content: '';
+      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 34px; border-radius: 20px;
+      background: #000; z-index: 10;
+    }
+
+    /* ═══ SCREEN DESIGNS (390px 기준) ═══ */
+
+    /* ── Screen 1: Home ── */
+    .s-home {
+      width: 100%; height: 100%;
+      background: #f5f4f0;
+      display: flex; flex-direction: column;
+    }
+
+    .s-home .status-bar {
+      height: 54px; padding: 0 28px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      padding-bottom: 10px;
+    }
+    .sb-time { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .sb-icons { display: flex; gap: 6px; align-items: center; }
+    .sb-icons span { font-size: 13px; color: #0f172a; }
+
+    .s-home .content { padding: 16px 22px; flex: 1; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+
+    .home-header { display: flex; justify-content: space-between; align-items: center; }
+    .home-title { font-family: var(--f-en); font-size: 26px; font-weight: 800; color: #0f172a; letter-spacing: -.03em; }
+    .home-lang-row { display: flex; gap: 6px; }
+    .lang-chip {
+      padding: 5px 10px; border-radius: 100px;
+      font-family: var(--f-en); font-size: 11px; font-weight: 700; border: none; cursor: pointer;
+    }
+    .lang-chip.on { background: #6c2eff; color: #fff; }
+    .lang-chip.off { background: #e8e3ff; color: #6c2eff; }
+
+    .home-greeting { font-family: var(--f-en); font-size: 13px; color: #94a3b8; font-weight: 400; }
+
+    .today-card {
+      background: #fff; border-radius: 20px; padding: 16px 18px;
+      box-shadow: 0 2px 12px rgba(108,46,255,.08);
+      border: 1px solid rgba(108,46,255,.06);
+    }
+    .today-label { font-family: var(--f-en); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .today-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #6c2eff; display: inline-block; }
+    .today-phrase { font-family: var(--f-ko); font-size: 19px; font-weight: 700; color: #0f172a; line-height: 1.4; margin-bottom: 4px; }
+    .today-trans { font-family: var(--f-en); font-size: 12px; color: #64748b; margin-bottom: 14px; }
+    .today-btn {
+      width: 100%; background: linear-gradient(135deg, #6c2eff, #9b6fff);
+      color: #fff; border: none; border-radius: 12px; padding: 10px;
+      font-family: var(--f-en); font-size: 12px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    .start-btn {
+      width: 100%; background: #0f172a; color: #fff;
+      border: none; border-radius: 16px; padding: 14px;
+      font-family: var(--f-en); font-size: 14px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: -.01em;
+    }
+    .start-btn-sub { font-size: 9px; color: rgba(255,255,255,.45); font-weight: 400; margin-left: 4px; }
+
+    .quick-label { font-family: var(--f-en); font-size: 13px; font-weight: 700; color: #0f172a; }
+    .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .qg-btn {
+      background: #fff; border: 1px solid rgba(108,46,255,.08);
+      border-radius: 16px; padding: 12px 14px; cursor: pointer; text-align: left;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .qg-icon { font-size: 18px; margin-bottom: 6px; display: block; }
+    .qg-name { font-family: var(--f-en); font-size: 12px; font-weight: 700; color: #0f172a; display: block; margin-bottom: 2px; }
+    .qg-desc { font-family: var(--f-en); font-size: 10px; color: #94a3b8; display: block; }
+
+    /* ── Screen 2: Interview (center) ── */
+    .s-interview {
+      width: 100%; height: 100%;
+      background: linear-gradient(165deg, #0e0b22 0%, #150f35 40%, #1a1340 100%);
+      display: flex; flex-direction: column;
+    }
+
+    .s-interview .status-bar {
+      height: 54px; padding: 0 28px 10px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .sb-time-w { font-size: 15px; font-weight: 700; color: #fff; }
+    .sb-icons-w { display: flex; gap: 6px; align-items: center; }
+    .sb-icons-w span { font-size: 13px; color: rgba(255,255,255,.6); }
+
+    .iv-header {
+      padding: 10px 22px 14px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .iv-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, #6c2eff 0%, #ffd84d 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(108,46,255,.4);
+    }
+    .iv-info { flex: 1; }
+    .iv-name { font-family: var(--f-en); font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+    .iv-role { font-family: var(--f-en); font-size: 11px; color: rgba(255,255,255,.4); margin-top: 1px; }
+    .iv-live {
+      background: rgba(255,70,70,.15); border: 1px solid rgba(255,70,70,.3);
+      border-radius: 100px; padding: 4px 10px;
+      font-family: var(--f-en); font-size: 10px; font-weight: 800; color: #ff6b6b;
+      display: flex; align-items: center; gap: 4px;
+      letter-spacing: .06em;
+    }
+    .iv-live::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #ff6b6b; }
+
+    .iv-chat { flex: 1; padding: 14px 20px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+
+    .iv-bubble { border-radius: 18px; padding: 10px 14px; font-size: 14px; line-height: 1.5; max-width: 85%; }
+    .iv-ai {
+      background: rgba(108,46,255,.18); border: 1px solid rgba(108,46,255,.22);
+      color: #e4dcff; align-self: flex-start; border-bottom-left-radius: 4px;
+      font-family: var(--f-ko);
+    }
+    .iv-ai-sub { font-family: var(--f-en); font-size: 11px; color: rgba(255,255,255,.35); margin-top: 3px; }
+    .iv-user {
+      background: #ffd84d; color: #0f172a; align-self: flex-end;
+      border-bottom-right-radius: 4px; font-weight: 700; font-family: var(--f-ko);
+    }
+    .iv-hint {
+      align-self: flex-start;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px; padding: 9px 13px;
+      font-family: var(--f-en); font-size: 11px; color: rgba(255,255,255,.38);
+    }
+    .iv-hint-word {
+      display: inline-block; background: rgba(108,46,255,.22);
+      border-radius: 6px; padding: 1px 7px;
+      font-family: var(--f-ko); font-size: 13px; color: #c4b0ff;
+      font-weight: 600; margin: 0 2px;
+    }
+
+    .iv-bottom { padding: 0 20px 40px; display: flex; flex-direction: column; gap: 10px; }
+
+    .iv-timer-card {
+      background: rgba(255,255,255,.04); border-radius: 16px; padding: 12px 16px;
+      border: 1px solid rgba(108,46,255,.14);
+    }
+    .iv-timer-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .iv-timer-label { font-family: var(--f-en); font-size: 10px; color: rgba(255,255,255,.28); letter-spacing: .1em; text-transform: uppercase; }
+    .iv-timer-val { font-family: var(--f-en); font-size: 22px; font-weight: 800; color: #ffd84d; letter-spacing: -.04em; }
+    .iv-timer-track { height: 4px; background: rgba(255,255,255,.07); border-radius: 99px; overflow: hidden; }
+    .iv-timer-fill { height: 100%; width: 62%; background: linear-gradient(90deg, #6c2eff, #ffd84d); border-radius: 99px; }
+
+    .iv-mic-area { display: flex; justify-content: center; align-items: center; gap: 24px; }
+    .iv-mic-skip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.4); border-radius: 100px; padding: 8px 16px; font-family: var(--f-en); font-size: 11px; font-weight: 600; cursor: pointer; }
+    .iv-mic-btn {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #6c2eff, #9b6fff);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 0 0 10px rgba(108,46,255,.12), 0 0 0 20px rgba(108,46,255,.06), 0 12px 30px rgba(108,46,255,.4);
+    }
+    .iv-mic-hint { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.4); border-radius: 100px; padding: 8px 16px; font-family: var(--f-en); font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    /* ── Screen 3: Score ── */
+    .s-score {
+      width: 100%; height: 100%;
+      background: #f5f4f0;
+      display: flex; flex-direction: column;
+    }
+    .s-score .status-bar { height: 54px; padding: 0 28px 10px; display: flex; align-items: flex-end; justify-content: space-between; }
+
+    .sc-content { padding: 12px 22px; flex: 1; display: flex; flex-direction: column; gap: 13px; overflow: hidden; }
+
+    .sc-header-row { display: flex; align-items: center; gap: 10px; }
+    .sc-back { width: 32px; height: 32px; border-radius: 10px; background: #fff; border: 1px solid rgba(108,46,255,.1); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+    .sc-title-block { }
+    .sc-title { font-family: var(--f-en); font-size: 16px; font-weight: 800; color: #0f172a; letter-spacing: -.02em; }
+    .sc-subtitle { font-family: var(--f-ko); font-size: 11px; color: #94a3b8; margin-top: 1px; }
+
+    .sc-big-card {
+      background: linear-gradient(135deg, #6c2eff 0%, #9b6fff 100%);
+      border-radius: 22px; padding: 18px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 12px 30px rgba(108,46,255,.3);
+    }
+    .sc-big-left { }
+    .sc-big-score { font-family: var(--f-en); font-size: 52px; font-weight: 800; color: #ffd84d; letter-spacing: -.06em; line-height: 1; }
+    .sc-big-pct { font-family: var(--f-en); font-size: 20px; color: rgba(255,255,255,.5); font-weight: 600; }
+    .sc-big-label { font-family: var(--f-en); font-size: 11px; color: rgba(255,255,255,.5); margin-top: 4px; }
+    .sc-big-grade {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--f-en); font-size: 28px; font-weight: 800; color: #fff;
+    }
+
+    .sc-breakdown { background: #fff; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+    .sc-br-label { font-family: var(--f-en); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #94a3b8; margin-bottom: 2px; }
+    .sc-br-row { display: flex; align-items: center; gap: 10px; }
+    .sc-br-name { font-family: var(--f-en); font-size: 12px; color: #64748b; width: 62px; flex-shrink: 0; }
+    .sc-br-track { flex: 1; height: 6px; background: #f1f0ec; border-radius: 99px; overflow: hidden; }
+    .sc-br-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6c2eff, #9b6fff); }
+    .sc-br-val { font-family: var(--f-en); font-size: 12px; font-weight: 700; color: #0f172a; width: 32px; text-align: right; }
+
+    .sc-phrase-card { background: #fff; border-radius: 18px; padding: 14px 16px; border: 1.5px solid rgba(108,46,255,.12); }
+    .sc-phrase-tag { font-family: var(--f-en); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #6c2eff; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+    .sc-phrase-tag::before { content: '💡'; }
+    .sc-phrase-ko { font-family: var(--f-ko); font-size: 16px; font-weight: 700; color: #0f172a; line-height: 1.4; }
+    .sc-phrase-en { font-family: var(--f-en); font-size: 12px; color: #64748b; margin-top: 3px; }
+
+    .sc-actions { display: flex; gap: 8px; margin-top: auto; padding-bottom: 4px; }
+    .sc-retry { flex: 1; background: #0f172a; color: #fff; border: none; border-radius: 14px; padding: 13px; font-family: var(--f-en); font-size: 13px; font-weight: 700; cursor: pointer; }
+    .sc-next { flex: 1; background: linear-gradient(135deg, #6c2eff, #9b6fff); color: #fff; border: none; border-radius: 14px; padding: 13px; font-family: var(--f-en); font-size: 13px; font-weight: 700; cursor: pointer; }
+
+    /* Home indicator */
+    .home-indicator {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      width: 130px; height: 5px; background: rgba(0,0,0,.2); border-radius: 99px;
+    }
+    .home-indicator-w { background: rgba(255,255,255,.25); }
+
+    /* 폰 레이블 */
+    .phone-label {
+      text-align: center; margin-top: 16px;
+      font-family: var(--f-en); font-size: .72rem; color: rgba(255,255,255,.25);
+      font-weight: 500; letter-spacing: .05em;
+    }
+
+    /* ══ WHY GRID ══ */
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 3.2rem; }
+    .wcard { background: var(--card); border-radius: var(--radius); padding: 1.9rem 1.75rem; border: 1px solid var(--border); transition: transform .28s, box-shadow .28s; position: relative; overflow: hidden; }
+    .wcard::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2.5px; background: linear-gradient(90deg, var(--purple), var(--gold)); opacity: 0; transition: opacity .28s; }
+    .wcard:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(108,46,255,.1); }
+    .wcard:hover::after { opacity: 1; }
+    .wcard-icon { width: 46px; height: 46px; border-radius: 13px; background: var(--purple-lt); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; margin-bottom: 1.15rem; }
+    .wcard h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: .55rem; letter-spacing: -.01em; }
+    .wcard p { font-size: .875rem; color: var(--muted); line-height: 1.65; }
+
+    /* ══ HOW ══ */
+    .how-sec { background: var(--ink); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 3.5rem; }
+    .step { padding: 2.2rem 2rem; position: relative; border-right: 1px solid rgba(255,255,255,.06); }
+    .step:last-child { border-right: none; }
+    .step-n { font-size: 4.5rem; font-weight: 800; color: rgba(255,255,255,.04); line-height: 1; letter-spacing: -.06em; margin-bottom: .4rem; }
+    .step-icon { font-size: 1.9rem; margin-bottom: .9rem; }
+    .step h3 { font-size: 1.06rem; font-weight: 700; color: #fff; margin-bottom: .55rem; }
+    .step p { font-size: .875rem; color: rgba(255,255,255,.42); line-height: 1.65; }
+
+    /* ══ KEYWORD ══ */
+    .kw-sec { background: rgba(108,46,255,.035); padding: 5.5rem 5.5vw; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .pills { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 2.2rem; }
+    .pill { background: var(--card); border: 1px solid var(--border); border-radius: 100px; padding: .38rem 1rem; font-size: .8rem; color: var(--muted); transition: all .18s; cursor: default; }
+    .pill.ko { font-family: var(--f-ko); font-size: .77rem; }
+    .pill:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+    /* ══ FAQ ══ */
+    .faq-list { margin-top: 2.6rem; max-width: 680px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 1.3rem 0; }
+    .faq-q { font-size: .97rem; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; letter-spacing: -.01em; }
+    .faq-q::after { content: '+'; font-size: 1.35rem; color: var(--purple); flex-shrink: 0; font-weight: 300; }
+    .faq-a { font-size: .88rem; color: var(--muted); line-height: 1.72; margin-top: .75rem; display: none; }
+    .faq-item.open .faq-q::after { content: '−'; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ══ CTA ══ */
+    .cta-wrap { padding: 0 5.5vw 7rem; }
+    .cta-block { background: var(--ink); border-radius: 28px; padding: 4.5rem 5rem; display: flex; align-items: center; justify-content: space-between; gap: 2.5rem; flex-wrap: wrap; position: relative; overflow: hidden; }
+    .cta-deco { position: absolute; right: 4rem; top: 50%; transform: translateY(-50%); font-family: var(--f-ko); font-size: 7.5rem; font-weight: 900; color: rgba(255,255,255,.025); white-space: nowrap; pointer-events: none; }
+    .cta-block h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; color: #fff; line-height: 1.18; letter-spacing: -.03em; }
+    .cta-block h2 em { color: var(--gold); font-style: normal; }
+    .cta-sub { margin-top: .65rem; font-size: .92rem; color: rgba(255,255,255,.4); }
+    .btn-gold { background: var(--gold); color: var(--ink); border: none; border-radius: 100px; padding: 1rem 2.6rem; font-size: .98rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: transform .18s, box-shadow .18s; }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,216,77,.4); }
+
+    /* ══ FOOTER ══ */
+    footer { border-top: 1px solid var(--border); padding: 2rem 5.5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: .78rem; color: var(--muted); }
+    .ft-logo { font-weight: 800; font-size: 1.1rem; color: var(--purple); letter-spacing: -.02em; display: flex; align-items: center; gap: .4rem; }
+    .ft-logo-ko { font-family: var(--f-ko); font-size: .7rem; color: var(--muted); font-weight: 400; }
+    .ft-links { display: flex; gap: 1.5rem; }
+    .ft-links a { color: var(--muted); text-decoration: none; transition: color .15s; }
+    .ft-links a:hover { color: var(--purple); }
+
+    /* ══ KEYFRAMES ══ */
+    @keyframes up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    @keyframes blink { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(1.35); } }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1060px) {
+      .app-sec-inner { grid-template-columns: 1fr; }
+      .phones-stage { height: 400px; margin-top: 3rem; }
+      .mp-wrap.center { transform: scale(0.44); margin: 0 -100px; }
+      .mp-wrap.side-l { transform: scale(0.34) translateY(40px); margin-right: -130px; }
+      .mp-wrap.side-r { transform: scale(0.34) translateY(40px); margin-left: -130px; }
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding-top: 6.5rem; text-align: center; }
+      .hero-body { margin-left: auto; margin-right: auto; }
+      .hero-ctas, .trust-row { justify-content: center; }
+      .hero-phone-wrap { display: none; }
+      .why-grid, .steps { grid-template-columns: 1fr; }
+      .step { border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .step:last-child { border-bottom: none; }
+      nav { padding: 1rem 1.4rem; }
+      .cta-block { padding: 2.8rem 2rem; justify-content: center; text-align: center; }
+      .cta-deco { display: none; }
+      .mp-wrap.side-l, .mp-wrap.side-r { display: none; }
+      .mp-wrap.center { transform: scale(0.48); margin: 0 -80px; }
+      .phones-stage { height: 380px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">Kkobi <span class="nav-logo-ko">꼬비</span></a>
+  <a class="nav-pill" href="https://forms.gle/YCVLo1PmHeuiy7eF8" target="_blank">베타 신청하기 →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-label="Learn to speak Korean with AI">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div>
+    <div class="eyebrow"><span class="dot"></span> Free Beta · AI Korean Speaking App</div>
+    <h1 class="hero-title">Speak<br><span class="ko-pill">한국어</span><br>from <span class="accent">Day&nbsp;1</span></h1>
+    <p class="hero-body">Kkobi is your AI Korean conversation partner. Practice speaking Korean in real-life scenarios, get instant pronunciation feedback, and build the confidence to actually speak — no classroom, no judgment.</p>
+    <div class="hero-ctas">
+      <a href="https://forms.gle/YCVLo1PmHeuiy7eF8" target="_blank" class="btn-fill">✨ Join Free Beta</a>
+      <a href="#app-screens" class="btn-outline">See the app</a>
+    </div>
+    <div class="trust-row">
+      <div class="flags">🇺🇸 🇮🇩 🇵🇭 🇧🇷 🇩🇪 🇯🇵</div>
+      <span>Learners from 30+ countries on the waitlist</span>
+    </div>
+  </div>
+  <div class="hero-phone-wrap" aria-hidden="true">
+    <div class="phone">
+      <div class="phone-inner">
+        <div class="p-status"><span>9:41</span><span>● ● ●</span></div>
+        <div class="bubble b-ai">안녕하세요! 저는 꼬비예요 👹<br><span style="font-family:var(--f-en);font-size:.61rem;opacity:.48">Hi! I'm Kkobi — let's speak Korean!</span></div>
+        <div class="bubble b-hint">💡 Try: "저는 한국어를 배우고 싶어요"</div>
+        <div class="bubble b-user">저는 한국어를<br>배우고 싶어요!</div>
+        <div class="bubble b-ai">완벽해요! 🌟<br><span style="font-family:var(--f-en);font-size:.61rem;opacity:.48">Your pronunciation sounds natural!</span></div>
+        <div class="score-card">
+          <div class="sc-label">Pronunciation Score</div>
+          <div class="sc-row"><span class="sc-val">88%</span><span class="sc-grade">A</span></div>
+          <div class="sc-bar"><div class="sc-fill"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="float-badge fb-1"><span>🎤</span><div><div>Real-time feedback</div><div class="fb-sub">AI pronunciation check</div></div></div>
+    <div class="float-badge fb-2"><span>🇰🇷</span><div><div>Real expressions</div><div class="fb-sub">No awkward bot phrases</div></div></div>
+  </div>
+</section>
+
+<!-- ══ APP SCREENS ══ -->
+<section class="app-sec" id="app-screens" aria-labelledby="app-h">
+  <div class="app-sec-inner">
+
+    <!-- Left text -->
+    <div class="app-sec-text">
+      <div class="sec-label">Inside Kkobi</div>
+      <h2 class="sec-title" id="app-h" style="color:#fff">
+        Everything you need<br>to actually speak <span class="ko" style="color:var(--gold)">한국어</span>
+      </h2>
+      <p class="sec-body">From today's phrase to a full 1-minute AI interview — Kkobi guides you through real speaking practice, step by step.</p>
+
+      <div class="af-list">
+        <div class="af-item">
+          <div class="af-num">①</div>
+          <div>
+            <h4>Home Dashboard</h4>
+            <p>Daily phrase, 7-day challenge, and quick access to all practice modes — personalized for your level.</p>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-num">②</div>
+          <div>
+            <h4>AI Interview Mode</h4>
+            <p>Speak with a virtual Korean character. Hint words, a live countdown timer, and real-time AI feedback keep you on track.</p>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-num">③</div>
+          <div>
+            <h4>Pronunciation Score</h4>
+            <p>After every reply, see your score broken down by accuracy, fluency, and naturalness. Retry until it clicks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: 3 phone screens -->
+    <div class="phones-stage" aria-hidden="true">
+
+      <!-- Phone 1: Home (left, smaller) -->
+      <div class="mp-wrap side-l">
+        <div class="mockup-phone">
+          <div class="s-home">
+            <div class="status-bar">
+              <span class="sb-time">9:41</span>
+              <div class="sb-icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+            </div>
+            <div class="content">
+              <div class="home-header">
+                <div class="home-title">Kkobi 꼬비</div>
+                <div class="home-lang-row">
+                  <button class="lang-chip on">🇰🇷</button>
+                  <button class="lang-chip off">🇺🇸</button>
+                  <button class="lang-chip off">🇮🇩</button>
+                </div>
+              </div>
+              <div class="home-greeting">Good morning! Ready to speak Korean? ☀️</div>
+
+              <div class="today-card">
+                <div class="today-label">Today's Phrase</div>
+                <div class="today-phrase">생각보다 어렵네요.</div>
+                <div class="today-trans">It's harder than I thought.</div>
+                <button class="today-btn">🎤 Practice this now</button>
+              </div>
+
+              <button class="start-btn">
+                🎤 Start 1-Min Korean Practice
+                <span class="start-btn-sub">Interview K-pop artist · Voice-first</span>
+              </button>
+
+              <div class="quick-label">Quick Start</div>
+              <div class="quick-grid">
+                <button class="qg-btn"><span class="qg-icon">🎭</span><span class="qg-name">Mission Talk</span><span class="qg-desc">Guided missions</span></button>
+                <button class="qg-btn"><span class="qg-icon">📺</span><span class="qg-name">Drama Ogu</span><span class="qg-desc">K-drama style</span></button>
+                <button class="qg-btn"><span class="qg-icon">📚</span><span class="qg-name">My Phrases</span><span class="qg-desc">Saved phrases</span></button>
+                <button class="qg-btn"><span class="qg-icon">💬</span><span class="qg-name">Free Talk</span><span class="qg-desc">Talk freely</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="home-indicator"></div>
+        </div>
+        <div class="phone-label">① Home</div>
+      </div>
+
+      <!-- Phone 2: Interview (center, larger) -->
+      <div class="mp-wrap center">
+        <div class="mockup-phone">
+          <div class="s-interview">
+            <div class="status-bar">
+              <span class="sb-time-w">9:41</span>
+              <div class="sb-icons-w"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+            </div>
+            <div class="iv-header">
+              <div class="iv-avatar">👹</div>
+              <div class="iv-info">
+                <div class="iv-name">Kkobi AI</div>
+                <div class="iv-role">K-pop Artist · Interview Mode</div>
+              </div>
+              <div class="iv-live">REC</div>
+            </div>
+            <div class="iv-chat">
+              <div class="iv-bubble iv-ai">
+                안녕하세요! 오늘 인터뷰 감사해요 🎤
+                <div class="iv-ai-sub">Thanks for the interview today!</div>
+              </div>
+              <div class="iv-hint">
+                💡 Hint words: <span class="iv-hint-word">이름</span> i-reum &nbsp;<span class="iv-hint-word">노래</span> no-rae
+              </div>
+              <div class="iv-bubble iv-user">꼬비 씨 이름이 무슨 뜻이에요?</div>
+              <div class="iv-bubble iv-ai">
+                오, 좋은 질문이에요! 👹
+                <div class="iv-ai-sub">Oh, great question!</div>
+              </div>
+            </div>
+            <div class="iv-bottom">
+              <div class="iv-timer-card">
+                <div class="iv-timer-row">
+                  <span class="iv-timer-label">Time Remaining</span>
+                  <span class="iv-timer-val">6.5s</span>
+                </div>
+                <div class="iv-timer-track"><div class="iv-timer-fill"></div></div>
+              </div>
+              <div class="iv-mic-area">
+                <button class="iv-mic-skip">Skip</button>
+                <div class="iv-mic-btn">🎤</div>
+                <button class="iv-mic-hint">Hint</button>
+              </div>
+            </div>
+          </div>
+          <div class="home-indicator home-indicator-w"></div>
+        </div>
+        <div class="phone-label">② AI Interview</div>
+      </div>
+
+      <!-- Phone 3: Score (right, smaller) -->
+      <div class="mp-wrap side-r">
+        <div class="mockup-phone">
+          <div class="s-score">
+            <div class="status-bar">
+              <span class="sb-time">9:41</span>
+              <div class="sb-icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+            </div>
+            <div class="sc-content">
+              <div class="sc-header-row">
+                <div class="sc-back">←</div>
+                <div class="sc-title-block">
+                  <div class="sc-title">Result</div>
+                  <div class="sc-subtitle">꼬비 씨 이름이 무슨 뜻이에요?</div>
+                </div>
+              </div>
+
+              <div class="sc-big-card">
+                <div class="sc-big-left">
+                  <div>
+                    <span class="sc-big-score">88</span><span class="sc-big-pct">%</span>
+                  </div>
+                  <div class="sc-big-label">Overall Score · Great job! 🎉</div>
+                </div>
+                <div class="sc-big-grade">A</div>
+              </div>
+
+              <div class="sc-breakdown">
+                <div class="sc-br-label">Breakdown</div>
+                <div class="sc-br-row"><span class="sc-br-name">Accuracy</span><div class="sc-br-track"><div class="sc-br-fill" style="width:92%"></div></div><span class="sc-br-val">92%</span></div>
+                <div class="sc-br-row"><span class="sc-br-name">Fluency</span><div class="sc-br-track"><div class="sc-br-fill" style="width:85%"></div></div><span class="sc-br-val">85%</span></div>
+                <div class="sc-br-row"><span class="sc-br-name">Natural</span><div class="sc-br-track"><div class="sc-br-fill" style="width:80%"></div></div><span class="sc-br-val">80%</span></div>
+              </div>
+
+              <div class="sc-phrase-card">
+                <div class="sc-phrase-tag">Native expression</div>
+                <div class="sc-phrase-ko">꼬비 씨 이름이 무슨 뜻이에요?</div>
+                <div class="sc-phrase-en">What does the name Kkobi mean?</div>
+              </div>
+
+              <div class="sc-actions">
+                <button class="sc-retry">🔄 Retry</button>
+                <button class="sc-next">Next →</button>
+              </div>
+            </div>
+          </div>
+          <div class="home-indicator"></div>
+        </div>
+        <div class="phone-label">③ Score</div>
+      </div>
+
+    </div><!-- /phones-stage -->
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="sec" aria-labelledby="why-h">
+  <div class="sec-label">Why Kkobi</div>
+  <h2 class="sec-title" id="why-h">The fastest way to<br>actually speak <span class="ko">한국어</span></h2>
+  <p class="sec-body">Most Korean apps teach you to tap and match. Kkobi makes you open your mouth from the very first lesson.</p>
+  <div class="why-grid">
+    <article class="wcard"><div class="wcard-icon">🎙️</div><h3>AI Korean Speaking Practice</h3><p>Have real Korean conversations with our AI. Practice ordering coffee, meeting new friends, or navigating Seoul — at your own pace, anytime.</p></article>
+    <article class="wcard"><div class="wcard-icon">📊</div><h3>Instant Pronunciation Feedback</h3><p>Speak and instantly see your score. Our AI listens like a native speaker and helps you sound natural — not textbook-stiff or robotic.</p></article>
+    <article class="wcard"><div class="wcard-icon">💬</div><h3>Real Korean Expressions</h3><p>Learn the Korean people actually speak. From K-pop slang to polite speech levels, Kkobi covers real-life language — not outdated phrases.</p></article>
+    <article class="wcard"><div class="wcard-icon">😌</div><h3>No Fear, No Embarrassment</h3><p>Practice without the anxiety of speaking to a real person. Make mistakes freely — Kkobi's AI never judges you.</p></article>
+    <article class="wcard"><div class="wcard-icon">⚡</div><h3>3-Minute Daily Sessions</h3><p>3 minutes of real speaking beats 30 minutes of passive study. Kkobi fits into your routine wherever you are.</p></article>
+    <article class="wcard"><div class="wcard-icon">🌏</div><h3>Built for Global Learners</h3><p>Learning Korean for K-pop, K-drama, travel, or work? Kkobi adapts to your reason and your level automatically.</p></article>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="sec how-sec" id="how" aria-labelledby="how-h">
+  <div class="sec-label" style="color:rgba(255,255,255,.28)">How it works</div>
+  <h2 class="sec-title" id="how-h" style="color:#fff">말문이 트이는 3단계<br><span style="font-family:var(--f-en);font-size:.48em;color:rgba(255,255,255,.28);font-weight:400">3 steps to finally speak Korean</span></h2>
+  <div class="steps">
+    <div class="step"><div class="step-n">01</div><div class="step-icon">🎯</div><h3>Pick a scenario</h3><p>Choose from hundreds of real-life Korean conversations — café, K-pop fan meeting, travel, workplace. You name it.</p></div>
+    <div class="step"><div class="step-n">02</div><div class="step-icon">🗣️</div><h3>Speak Korean out loud</h3><p>Kkobi's AI listens as you speak. No typing. You build real speaking muscle memory, not just reading ability.</p></div>
+    <div class="step"><div class="step-n">03</div><div class="step-icon">📈</div><h3>Get instant feedback</h3><p>See your score, learn the natural way to say it, and try again. Your Korean improves with every single session.</p></div>
+  </div>
+</section>
+
+<!-- KEYWORDS -->
+<section class="kw-sec" aria-label="Korean learning topics">
+  <div class="sec-label">Learn Korean for every goal</div>
+  <h2 class="sec-title">Whatever brought you to Korean,<br>Kkobi has you covered</h2>
+  <div class="pills">
+    <span class="pill">Learn Korean for K-pop</span>
+    <span class="pill">Korean conversation practice</span>
+    <span class="pill ko">한국어 말하기 연습</span>
+    <span class="pill">AI Korean tutor</span>
+    <span class="pill">Learn Korean for K-drama</span>
+    <span class="pill">Korean speaking practice online</span>
+    <span class="pill ko">한국어 회화 앱</span>
+    <span class="pill">Korean pronunciation app</span>
+    <span class="pill">Learn Korean for travel to Seoul</span>
+    <span class="pill">Korean language app for beginners</span>
+    <span class="pill">Speak Korean with AI</span>
+    <span class="pill">Belajar bahasa Korea dengan AI</span>
+    <span class="pill">Korean for TOPIK prep</span>
+    <span class="pill ko">AI로 한국어 배우기</span>
+    <span class="pill">How to speak Korean naturally</span>
+    <span class="pill">Learn Korean online free</span>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" aria-labelledby="faq-h">
+  <div class="sec-label">FAQ</div>
+  <h2 class="sec-title" id="faq-h">자주 묻는 질문</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q">Is Kkobi good for complete beginners learning Korean?</div><div class="faq-a">Yes! Kkobi is designed for all levels. If you're a complete beginner, we start with the most essential Korean phrases and build from there. You'll be speaking real Korean sentences on your very first day.</div></div>
+    <div class="faq-item"><div class="faq-q">How is Kkobi different from Duolingo or other Korean apps?</div><div class="faq-a">Most Korean apps focus on reading and vocabulary drills. Kkobi is built specifically for speaking practice. You speak Korean out loud, our AI listens, and gives you instant pronunciation feedback — the closest thing to a Korean conversation partner available 24/7.</div></div>
+    <div class="faq-item"><div class="faq-q">Can I use Kkobi to prepare for TOPIK?</div><div class="faq-a">Kkobi focuses on spoken Korean fluency, which is a great complement to TOPIK preparation. Strong speaking ability helps with listening comprehension and overall Korean language confidence.</div></div>
+    <div class="faq-item"><div class="faq-q">What languages are supported besides Korean?</div><div class="faq-a">Kkobi currently provides hint translations in English and Indonesian, with more languages coming soon. The Korean conversation practice works for learners from any native language background.</div></div>
+    <div class="faq-item"><div class="faq-q">How much does Kkobi cost?</div><div class="faq-a">Kkobi is currently in free beta. Join the waitlist now and get free access at launch. Early beta users will receive special founding member pricing.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-wrap">
+  <div class="cta-block" role="complementary">
+    <div class="cta-deco">말문이 트인다</div>
+    <div><h2>Ready to actually <em>speak</em> Korean?</h2><p class="cta-sub">Join thousands of learners on the Kkobi waitlist. Free during beta.</p></div>
+    <a href="https://forms.gle/YCVLo1PmHeuiy7eF8" target="_blank" class="btn-gold">Join Free Beta →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">Kkobi <span class="ft-logo-ko">꼬비 · AI Korean Speaking App</span></div>
+  <div>kkobi.app · © 2026</div>
+  <div class="ft-links">
+    <a href="mailto:hello@kkobi.app">Contact</a>
+    <a href="#">Privacy</a>
+    <a href="https://forms.gle/YCVLo1PmHeuiy7eF8" target="_blank">Beta Waitlist</a>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = e.target.dataset.transform || 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.07 });
+
+  document.querySelectorAll('.wcard, .step, .af-item').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(26px)';
+    el.style.transition = `opacity .48s ${i * 0.06}s ease, transform .48s ${i * 0.06}s ease`;
+    io.observe(el);
+  });
+
+  // 폰 등장 애니메이션
+  document.querySelectorAll('.mp-wrap').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transition = `opacity .6s ${0.1 + i * 0.12}s ease`;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; } });
+    }, { threshold: 0.1 });
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
